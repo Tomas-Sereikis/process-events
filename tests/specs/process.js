@@ -1,4 +1,4 @@
-/* global describe, pit, expect */
+/*global describe, pit, expect*/
 jest.autoMockOff();
 
 var processEvents = require('../../index');
@@ -104,6 +104,36 @@ describe('process test', function () {
       expect(responses[1]).toEqual({b: 2});
       promises[0].close();
       promises[1].close();
+    });
+  });
+
+  pit('should reject promises which where pending when process was killed', function () {
+    return createChild2().then(function (process) {
+      var p1 = process.send('promise-long');
+      var p2 = process.send('exit');
+      return p2.then(function () {
+        process.close();
+        return Promise.reject('Process `promise-long` was resolved while it should be rejected!');
+      }, function () {
+        return p1.then(function () {
+          process.close();
+          return Promise.reject('Process `exit` was resolved while it should be rejected!');
+        }, function () {
+          process.close();
+        });
+      });
+    });
+  });
+
+  pit('should reject when sending message to closed process', function () {
+    return createChild2().then(function (process) {
+      return process.close().then(function () {
+        return process.send('promise');
+      }).then(function () {
+        return Promise.reject('Promise was resolved while it should be rejected!');
+      }, function () {
+        return true;
+      });
     });
   });
 });
