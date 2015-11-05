@@ -21,7 +21,7 @@ child.then(function (_pe_) {
 });
 ```
 
-File './processes/child.js'
+File `./processes/child.js`
 ```javascript
 var processChild = require('process-events').processChild();
 
