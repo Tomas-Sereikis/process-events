@@ -1,13 +1,18 @@
 {
   "name": "process-events",
   "version": "1.0.0",
-  "description": "",
+  "description": "Node.js Process events as Promises",
   "main": "index.js",
   "scripts": {
     "test": "jest"
   },
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Tomas-Sereikis/process-events.git"
+  },
+  "author": "Tomas Sereikis",
   "license": "ISC",
+  "homepage": "https://github.com/Tomas-Sereikis/process-events",
   "dependencies": {
     "fs-promise": "^0.3.1",
     "is-promise": "^2.1.0",
