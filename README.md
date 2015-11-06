@@ -1,5 +1,7 @@
 # Process Events
 
+`npm install process-events --save`
+
 Process events is a library from Node.js that can run custom events via forked processes and return there response as promise. 
 This is useful when you have long running tasks and you don't what to lock your main application thread. 
 
