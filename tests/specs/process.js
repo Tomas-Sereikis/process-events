@@ -1,4 +1,4 @@
-/*global describe, pit, expect*/
+/*global jest, describe, pit, expect*/
 jest.autoMockOff();
 
 var processEvents = require('../../index');
@@ -133,6 +133,28 @@ describe('process test', function () {
         return Promise.reject('Promise was resolved while it should be rejected!');
       }, function () {
         return true;
+      });
+    });
+  });
+
+  pit('should reopen closed process', function () {
+    return createChild1().then(function (process) {
+      return process.send('promise', {a: 1}).then(function (res) {
+        expect(res).toEqual({a: 1});
+        return process.close();
+      }).then(function () {
+        expect(process.isConnected()).toBeFalsy();
+        return process.reopen();
+      }).then(function () {
+        expect(process.isConnected()).toBeTruthy();
+        return process.send('promise', {b: 1});
+      }).then(function (res) {
+        expect(res).toEqual({b: 1});
+        return process.close();
+      }, function () {
+        console.log(arguments);
+        process.close();
+        return Promise.reject('Promise was rejected while it should be resolved!');
       });
     });
   });
